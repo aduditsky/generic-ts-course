@@ -13,6 +13,7 @@ export function SearchInput(props: ISearchInputProps) {
 
   useEffect(() => {
     setSearchQuery(debouncedQuery);
+    // eslint-disable-next-line
   }, [debouncedQuery]);
 
   return (
