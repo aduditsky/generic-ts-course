@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useDebounce from '../hooks/useDebounce';
 
-interface ISearchInput {
-  setSearchQuery: (searchQuery: string) => void;
+export interface ISearchInputProps {
+  searchQuery: string;
+  setSearchQuery(searchQuery: string): void;
 }
 
-function SearchInput(props: ISearchInput) {
-  const { setSearchQuery } = props;
-  const [query, setQuery] = useState<string>('');
-  const debounceQuery = useDebounce(query, 250);
+export function SearchInput(props: ISearchInputProps) {
+  const { setSearchQuery, searchQuery } = props;
+  const [query, setQuery] = useState<string>(searchQuery);
+  const debouncedQuery = useDebounce(query, 250);
 
   useEffect(() => {
-    setSearchQuery(debounceQuery);
-  }, [debounceQuery, setSearchQuery]);
+    setSearchQuery(debouncedQuery);
+  }, [debouncedQuery]);
 
   return (
     <>
       <label htmlFor='search' className='mt-3'>
-        Search! Try me
+        Search! Try me!
       </label>
       <input
+        value={query}
         id='search'
         className='form-control full-width'
         type='search'
@@ -32,5 +34,3 @@ function SearchInput(props: ISearchInput) {
     </>
   );
 }
-
-export default SearchInput;

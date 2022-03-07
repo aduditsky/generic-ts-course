@@ -1,16 +1,18 @@
-import IProperty from '../interfaces/IProperty';
+import * as React from 'react';
+import ISorter from '../interfaces/ISortersProperty';
 
-interface ISorters<T> {
-  object: T;
-  setProperty: (propertyType: IProperty<T>) => void;
+export interface ISortersProps<T> {
+  dataSource: Array<T>;
+  setSortProperty(sortProperty: ISorter<T>): void;
 }
 
-export default function Sorters<T>(props: ISorters<T>) {
-  const { object, setProperty } = props;
+export function Sorters<T>(props: ISortersProps<T>) {
+  const { dataSource, setSortProperty } = props;
+  const object = dataSource.length > 0 ? dataSource[0] : {};
   return (
     <>
       <label htmlFor='sorters' className='mt-3'>
-        Sorters! Try us too
+        Sorters! Try us too!
       </label>
       <select
         id='sorters'
@@ -18,7 +20,7 @@ export default function Sorters<T>(props: ISorters<T>) {
         onChange={(event) => {
           const values = event.target.value.split('-');
           if (values.length === 2) {
-            setProperty({
+            setSortProperty({
               property: values[0] as any,
               isDescending: values[1] === 'true',
             });
@@ -27,14 +29,14 @@ export default function Sorters<T>(props: ISorters<T>) {
       >
         {Object.keys(object).map((key) => {
           return (
-            <>
+            <React.Fragment key={key}>
               <option key={`${key}-true`} value={`${key}-true`}>
-                Sort by {key} descending
+                Sort by '{key}' descending!
               </option>
               <option key={`${key}-false`} value={`${key}-false`}>
-                Sort by {key} ascending!
+                Sort by '{key}' ascending!
               </option>
-            </>
+            </React.Fragment>
           );
         })}
       </select>
